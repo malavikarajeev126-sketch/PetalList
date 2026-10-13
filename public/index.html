@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PetalList 🎀 — A little list for a lovely day ♡</title>
+  <meta name="description" content="PetalList is a cute, coquette-aesthetic to-do list web application designed to romanticize your daily tasks, productivity, and study sessions.">
+  
+  <!-- Favicon Emoji -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎀</text></svg>">
+  
+  <!-- Google Fonts: Playfair Display (Serif Headings) & Poppins (Rounded Body Text) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400;1,600&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Floating Background Decorative Elements -->
+  <div class="sparkle-bg" aria-hidden="true">
+    <span class="float-item float-1">🎀</span>
+    <span class="float-item float-2">🌸</span>
+    <span class="float-item float-3">✨</span>
+    <span class="float-item float-4">♡</span>
+    <span class="float-item float-5">🩰</span>
+    <span class="float-item float-6">🌸</span>
+    <span class="float-item float-7">✨</span>
+    <span class="float-item float-8">🎀</span>
+  </div>
+
+  <div class="app-wrapper">
+    <main class="main-card" id="mainCard">
+      
+      <!-- ================= HEADER ================= -->
+      <header class="app-header">
+        <div class="header-bow-tag" aria-hidden="true">
+          <span class="bow-icon">🎀</span>
+          <span class="tag-sparkle">✨</span>
+        </div>
+        <h1 class="app-title" id="appTitle">PetalList <span class="title-bow">🎀</span></h1>
+        <p class="app-subtitle" id="appSubtitle">“A little list for a lovely day ♡”</p>
+      </header>
+
+      <!-- ================= DAILY SURPRISE SECTION ================= -->
+      <section class="reminder-section" id="reminderSection" aria-label="Daily Reminder and Motivation">
+        <div class="reminder-card" id="reminderCard">
+          <div class="reminder-ribbon-decor" aria-hidden="true">
+            <span>୨ৎ</span>
+          </div>
+
+          <div class="reminder-header-row">
+            <span class="reminder-badge" id="quoteCategory">GIRL, YOU GOT THIS 💗</span>
+            <button 
+              type="button" 
+              class="shuffle-btn" 
+              id="shuffleQuoteBtn" 
+              title="Get another cute quote!"
+              aria-label="Another reminder, please"
+            >
+              Another one, please! <span class="dice-icon">🎲</span>
+            </button>
+          </div>
+
+          <div class="reminder-quote-content">
+            <span class="quote-mark open-quote" aria-hidden="true">“</span>
+            <p class="reminder-quote-text" id="quoteText">Loading your daily sweet reminder... ♡</p>
+            <span class="quote-mark close-quote" aria-hidden="true">”</span>
+          </div>
+
+          <div class="reminder-footer-sparkle" aria-hidden="true">
+            <span>✨ ♡ 🌸 ♡ ✨</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= TASK INPUT FORM ================= -->
+      <section class="input-section" aria-label="Add New Task">
+        <form class="task-form" id="taskForm" novalidate>
+          <div class="input-container">
+            <span class="input-prefix-icon" aria-hidden="true">🌸</span>
+            <input 
+              type="text" 
+              id="taskInput" 
+              class="task-input" 
+              placeholder="What’s on your mind, pretty? ♡" 
+              autocomplete="off"
+              maxlength="200"
+              required
+              aria-label="Task description"
+            >
+            <button 
+              type="submit" 
+              class="add-task-btn" 
+              id="addTaskBtn"
+              aria-label="Add Task"
+            >
+              Add Task <span class="plus-icon">+</span>
+            </button>
+          </div>
+          <p class="validation-msg" id="validationMsg" role="alert" aria-live="polite"></p>
+        </form>
+      </section>
+
+      <!-- ================= STATISTICS & PROGRESS ================= -->
+      <section class="stats-section" id="statsSection" aria-label="Task Statistics">
+        <div class="stats-card">
+          <div class="stats-header">
+            <div class="stat-pill active-stat">
+              <span class="stat-icon">🌸</span>
+              <span class="stat-label">Active:</span>
+              <strong class="stat-value" id="activeTasksCount">0</strong>
+            </div>
+
+            <div class="stat-pill completed-stat">
+              <span class="stat-icon">💗</span>
+              <span class="stat-label">Completed:</span>
+              <strong class="stat-value" id="completedTasksCount">0</strong>
+            </div>
+
+            <div class="stat-pill total-stat">
+              <span class="stat-icon">🎀</span>
+              <span class="stat-label">Progress:</span>
+              <strong class="stat-value" id="progressPercentage">0%</strong>
+            </div>
+          </div>
+
+          <!-- Cute Progress Bar -->
+          <div class="progress-container" role="progressbar" id="progressBarContainer" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" aria-label="Task completion progress">
+            <div class="progress-bar-fill" id="progressBarFill" style="width: 0%;">
+              <span class="progress-bar-shimmer"></span>
+            </div>
+          </div>
+          <div class="progress-caption" id="progressCaption">Let's blossom today! ✨</div>
+        </div>
+      </section>
+
+      <!-- ================= FILTER CONTROLS ================= -->
+      <div class="controls-bar" id="controlsBar">
+        <div class="filter-tabs" role="tablist" aria-label="Task filters">
+          <button type="button" class="filter-tab active" id="filterAll" role="tab" aria-selected="true" data-filter="all">All ♡</button>
+          <button type="button" class="filter-tab" id="filterActive" role="tab" aria-selected="false" data-filter="active">To Bloom 🌸</button>
+          <button type="button" class="filter-tab" id="filterCompleted" role="tab" aria-selected="false" data-filter="completed">Done 🎀</button>
+        </div>
+
+        <button type="button" class="clear-done-btn" id="clearCompletedBtn" title="Clear all finished tasks">
+          Clear Done 🧹
+        </button>
+      </div>
+
+      <!-- ================= TASK LIST ================= -->
+      <section class="task-list-section" aria-label="Tasks List">
+        <ul class="task-list" id="taskList" aria-live="polite">
+          <!-- Dynamically populated tasks will appear here -->
+        </ul>
+
+        <!-- Cute Empty State -->
+        <div class="empty-state" id="emptyState">
+          <div class="empty-illustration" aria-hidden="true">
+            <span class="empty-bow">🎀</span>
+            <div class="empty-sparkles">
+              <span>🌸</span>
+              <span>✨</span>
+              <span>♡</span>
+            </div>
+          </div>
+          <h2 class="empty-title">All clear, gorgeous!</h2>
+          <p class="empty-message">“No little tasks yet! Time to romanticize your day ♡”</p>
+        </div>
+      </section>
+
+      <!-- ================= FOOTER ================= -->
+      <footer class="app-footer">
+        <div class="footer-divider" aria-hidden="true">
+          <span>୨ৎ</span>
+          <span class="dot">•</span>
+          <span>♡</span>
+          <span class="dot">•</span>
+          <span>୨ৎ</span>
+        </div>
+        <p class="footer-text" id="footerText">Made with love, pink dreams &amp; a little productivity ♡</p>
+        <div class="sync-badge" id="syncStatus">
+          <span class="sync-dot"></span>
+          <span class="sync-text" id="syncStatusText">Synced with server &amp; browser 🌸</span>
+        </div>
+      </footer>
+
+    </main>
+  </div>
+
+  <!-- Toast Notifications for Cute Feedback -->
+  <div class="toast-container" id="toastContainer" aria-live="polite" aria-atomic="true"></div>
+
+  <!-- Load Quotes Collection First -->
+  <script src="quotes.js"></script>
+  <!-- Load Main Application Logic -->
+  <script src="script.js"></script>
+</body>
+</html>

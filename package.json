@@ -1,0 +1,24 @@
+{
+  "name": "petallist",
+  "version": "1.0.0",
+  "description": "PetalList 🎀 - A cute, girly coquette-aesthetic to-do list web application",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "test": "node test/api.test.js"
+  },
+  "keywords": [
+    "todo",
+    "coquette",
+    "girly",
+    "express",
+    "nodejs",
+    "vanilla-js"
+  ],
+  "author": "PetalList Team",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.21.2"
+  }
+}

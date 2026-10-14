@@ -1,15 +1,15 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="blush" data-mode="light">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PetalList 🎀 — A little list for a lovely day ♡</title>
-  <meta name="description" content="PetalList is a cute, coquette-aesthetic to-do list web application designed to romanticize your daily tasks, productivity, and study sessions.">
+  <title>PetalList 🎀 — Smart Personal Productivity &amp; Habit Garden ♡</title>
+  <meta name="description" content="PetalList is a personal productivity, smart task management, Pomodoro focus timer, and habit garden web app with a sweet coquette aesthetic.">
   
   <!-- Favicon Emoji -->
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎀</text></svg>">
   
-  <!-- Google Fonts: Playfair Display (Serif Headings) & Poppins (Rounded Body Text) -->
+  <!-- Google Fonts: Playfair Display & Poppins -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400;1,600&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -30,17 +30,105 @@
   </div>
 
   <div class="app-wrapper">
+
+    <!-- ================= TOP UTILITY & PERSONALIZATION BAR ================= -->
+    <header class="top-nav-bar">
+      <div class="nav-branding">
+        <span class="brand-bow" aria-hidden="true">🎀</span>
+        <span class="brand-name">PetalList</span>
+      </div>
+
+      <div class="nav-actions">
+        <!-- Theme Selector Dropdown -->
+        <div class="theme-picker-wrapper">
+          <label for="themeSelect" class="sr-only">Choose Color Theme</label>
+          <select id="themeSelect" class="theme-select" title="Choose your pastel aesthetic theme">
+            <option value="blush">🌸 Blush Pink</option>
+            <option value="lavender">🪻 Lavender</option>
+            <option value="peach">🍑 Peach</option>
+            <option value="mint">🍵 Mint</option>
+          </select>
+        </div>
+
+        <!-- Light / Dark Mode Toggle -->
+        <button type="button" id="modeToggleBtn" class="nav-icon-btn" title="Toggle Light / Coquette Midnight Mode" aria-label="Toggle dark mode">
+          <span id="modeIcon">🌙</span>
+        </button>
+
+        <!-- Saved Favorite Quotes Modal Trigger -->
+        <button type="button" id="openFavoritesBtn" class="nav-icon-btn fav-nav-btn" title="View Saved Favorite Quotes" aria-label="View saved quotes">
+          <span>💌</span>
+          <span class="fav-count-badge" id="favCountBadge">0</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- ================= MAIN CARD CONTAINER ================= -->
     <main class="main-card" id="mainCard">
       
-      <!-- ================= HEADER ================= -->
-      <header class="app-header">
+      <!-- ================= PERSONAL GREETING & HEADER ================= -->
+      <section class="personal-greeting-section">
         <div class="header-bow-tag" aria-hidden="true">
           <span class="bow-icon">🎀</span>
           <span class="tag-sparkle">✨</span>
         </div>
-        <h1 class="app-title" id="appTitle">PetalList <span class="title-bow">🎀</span></h1>
+        <h1 class="app-title" id="appTitle">
+          <span id="greetingTimeText">Hello</span>,
+          <span class="user-display-name-wrap" title="Click to change your name">
+            <span id="userDisplayName">Pretty Girl</span>
+            <button type="button" class="edit-name-btn" id="editNameBtn" aria-label="Edit display name">✏️</button>
+          </span>
+          <span class="title-bow">🌸</span>
+        </h1>
+        <p class="greeting-date" id="currentDateDisplay">Loading today's date... ♡</p>
         <p class="app-subtitle" id="appSubtitle">“A little list for a lovely day ♡”</p>
-      </header>
+      </section>
+
+      <!-- ================= PERSONAL DASHBOARD METRICS ================= -->
+      <section class="dashboard-section" aria-label="Productivity Dashboard">
+        <div class="stats-card">
+          <div class="stats-header">
+            <div class="stat-pill today-stat">
+              <span class="stat-icon">🗓️</span>
+              <span class="stat-label">Today:</span>
+              <strong class="stat-value" id="todayTasksCount">0</strong>
+            </div>
+
+            <div class="stat-pill active-stat">
+              <span class="stat-icon">🌸</span>
+              <span class="stat-label">Pending:</span>
+              <strong class="stat-value" id="activeTasksCount">0</strong>
+            </div>
+
+            <div class="stat-pill completed-stat">
+              <span class="stat-icon">💗</span>
+              <span class="stat-label">Done:</span>
+              <strong class="stat-value" id="completedTasksCount">0</strong>
+            </div>
+
+            <div class="stat-pill total-stat">
+              <span class="stat-icon">🎀</span>
+              <span class="stat-label">Rate:</span>
+              <strong class="stat-value" id="progressPercentage">0%</strong>
+            </div>
+          </div>
+
+          <!-- Progress Bar -->
+          <div class="progress-container" role="progressbar" id="progressBarContainer" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" aria-label="Task completion progress">
+            <div class="progress-bar-fill" id="progressBarFill" style="width: 0%;">
+              <span class="progress-bar-shimmer"></span>
+            </div>
+          </div>
+
+          <!-- Encouraging Progress Caption / Finished Celebration Banner -->
+          <div class="progress-caption-wrap">
+            <p class="progress-caption" id="progressCaption">Let's blossom today! ✨</p>
+          </div>
+          <div class="all-finished-banner" id="allFinishedBanner" style="display: none;">
+            🌸 All your tasks are complete! Time to romanticize your evening, beautiful ♡ ✨
+          </div>
+        </div>
+      </section>
 
       <!-- ================= DAILY SURPRISE SECTION ================= -->
       <section class="reminder-section" id="reminderSection" aria-label="Daily Reminder and Motivation">
@@ -51,15 +139,26 @@
 
           <div class="reminder-header-row">
             <span class="reminder-badge" id="quoteCategory">GIRL, YOU GOT THIS 💗</span>
-            <button 
-              type="button" 
-              class="shuffle-btn" 
-              id="shuffleQuoteBtn" 
-              title="Get another cute quote!"
-              aria-label="Another reminder, please"
-            >
-              Another one, please! <span class="dice-icon">🎲</span>
-            </button>
+            <div class="reminder-actions">
+              <button
+                type="button"
+                class="favorite-quote-btn"
+                id="favoriteQuoteBtn"
+                title="Save quote to favorites"
+                aria-label="Save quote to favorites"
+              >
+                <span class="heart-icon" id="quoteHeartIcon">♡</span>
+              </button>
+              <button
+                type="button"
+                class="shuffle-btn"
+                id="shuffleQuoteBtn"
+                title="Get another cute quote!"
+                aria-label="Another reminder, please"
+              >
+                Another one, please! <span class="dice-icon">🎲</span>
+              </button>
+            </div>
           </div>
 
           <div class="reminder-quote-content">
@@ -74,100 +173,234 @@
         </div>
       </section>
 
-      <!-- ================= TASK INPUT FORM ================= -->
-      <section class="input-section" aria-label="Add New Task">
-        <form class="task-form" id="taskForm" novalidate>
-          <div class="input-container">
-            <span class="input-prefix-icon" aria-hidden="true">🌸</span>
-            <input 
-              type="text" 
-              id="taskInput" 
-              class="task-input" 
-              placeholder="What’s on your mind, pretty? ♡" 
-              autocomplete="off"
-              maxlength="200"
-              required
-              aria-label="Task description"
-            >
-            <button 
-              type="submit" 
-              class="add-task-btn" 
-              id="addTaskBtn"
-              aria-label="Add Task"
-            >
-              Add Task <span class="plus-icon">+</span>
+      <!-- ================= APP NAVIGATION TABS (Tasks | Focus Timer | Habit Garden) ================= -->
+      <nav class="feature-tabs-nav" aria-label="Features navigation">
+        <button type="button" class="feature-tab active" id="tabTasksBtn" data-target="tasksView" aria-selected="true">
+          📋 My Tasks
+        </button>
+        <button type="button" class="feature-tab" id="tabFocusBtn" data-target="focusView" aria-selected="false">
+          ⏱️ Focus Timer
+        </button>
+        <button type="button" class="feature-tab" id="tabGardenBtn" data-target="gardenView" aria-selected="false">
+          🌷 Habit Garden
+        </button>
+      </nav>
+
+      <!-- ================= VIEW 1: SMART TASK MANAGEMENT ================= -->
+      <div class="view-panel active" id="tasksView">
+
+        <!-- Add Task Form -->
+        <section class="input-section" aria-label="Add New Task">
+          <form class="task-form" id="taskForm" novalidate>
+            <div class="input-main-row">
+              <div class="input-container">
+                <span class="input-prefix-icon" aria-hidden="true">🌸</span>
+                <input
+                  type="text"
+                  id="taskInput"
+                  class="task-input"
+                  placeholder="What’s on your mind, pretty? ♡"
+                  autocomplete="off"
+                  maxlength="200"
+                  required
+                  aria-label="Task description"
+                >
+              </div>
+              <button
+                type="submit"
+                class="add-task-btn"
+                id="addTaskBtn"
+                aria-label="Add Task"
+              >
+                Add Task <span class="plus-icon">+</span>
+              </button>
+            </div>
+
+            <!-- Smart Metadata Row: Category, Priority, Due Date -->
+            <div class="task-meta-selectors">
+              <!-- Category Selector -->
+              <div class="meta-select-wrap">
+                <label for="taskCategory" class="meta-label">Category:</label>
+                <select id="taskCategory" class="meta-select" aria-label="Task category">
+                  <option value="Personal">🌷 Personal</option>
+                  <option value="College">🎓 College</option>
+                  <option value="Coding">💻 Coding</option>
+                  <option value="Self-care">💗 Self-care</option>
+                </select>
+              </div>
+
+              <!-- Priority Selector -->
+              <div class="meta-select-wrap">
+                <label for="taskPriority" class="meta-label">Priority:</label>
+                <select id="taskPriority" class="meta-select" aria-label="Task priority">
+                  <option value="Medium">🎀 Medium</option>
+                  <option value="High">✨ High</option>
+                  <option value="Low">🌸 Low</option>
+                </select>
+              </div>
+
+              <!-- Due Date Picker -->
+              <div class="meta-select-wrap">
+                <label for="taskDueDate" class="meta-label">Due Date:</label>
+                <input type="date" id="taskDueDate" class="meta-date-input" aria-label="Task due date">
+              </div>
+            </div>
+
+            <p class="validation-msg" id="validationMsg" role="alert" aria-live="polite"></p>
+          </form>
+        </section>
+
+        <!-- Search, Filter & Sort Controls Bar -->
+        <section class="controls-section" aria-label="Task search and filters">
+          <!-- Search & Sort Row -->
+          <div class="search-sort-bar">
+            <div class="search-box">
+              <span class="search-icon" aria-hidden="true">🔍</span>
+              <input type="text" id="taskSearchInput" class="search-input" placeholder="Search lovely tasks..." aria-label="Search tasks">
+              <button type="button" id="clearSearchBtn" class="clear-search-btn" title="Clear search" style="display: none;">×</button>
+            </div>
+
+            <div class="sort-box">
+              <label for="taskSortSelect" class="sort-label">Sort by:</label>
+              <select id="taskSortSelect" class="sort-select" aria-label="Sort tasks">
+                <option value="dueDate">⏳ Due Date</option>
+                <option value="priority">✨ Priority</option>
+                <option value="created">🗓️ Newest First</option>
+                <option value="alphabetical">🔤 Alphabetical</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Filter Pills Row -->
+          <div class="filter-pills-bar">
+            <div class="filter-tabs" role="tablist" aria-label="Task filters">
+              <button type="button" class="filter-tab active" id="filterAll" role="tab" aria-selected="true" data-filter="all">All ♡</button>
+              <button type="button" class="filter-tab" id="filterToday" role="tab" aria-selected="false" data-filter="today">Today 🗓️</button>
+              <button type="button" class="filter-tab" id="filterUpcoming" role="tab" aria-selected="false" data-filter="upcoming">Upcoming ⏳</button>
+              <button type="button" class="filter-tab" id="filterOverdue" role="tab" aria-selected="false" data-filter="overdue">Overdue ⚠️</button>
+              <button type="button" class="filter-tab" id="filterCompleted" role="tab" aria-selected="false" data-filter="completed">Done 🎀</button>
+            </div>
+
+            <button type="button" class="clear-done-btn" id="clearCompletedBtn" title="Clear all finished tasks">
+              Clear Done 🧹
             </button>
           </div>
-          <p class="validation-msg" id="validationMsg" role="alert" aria-live="polite"></p>
-        </form>
-      </section>
+        </section>
 
-      <!-- ================= STATISTICS & PROGRESS ================= -->
-      <section class="stats-section" id="statsSection" aria-label="Task Statistics">
-        <div class="stats-card">
-          <div class="stats-header">
-            <div class="stat-pill active-stat">
-              <span class="stat-icon">🌸</span>
-              <span class="stat-label">Active:</span>
-              <strong class="stat-value" id="activeTasksCount">0</strong>
-            </div>
+        <!-- Task List -->
+        <section class="task-list-section" aria-label="Tasks List">
+          <ul class="task-list" id="taskList" aria-live="polite">
+            <!-- Tasks populated dynamically -->
+          </ul>
 
-            <div class="stat-pill completed-stat">
-              <span class="stat-icon">💗</span>
-              <span class="stat-label">Completed:</span>
-              <strong class="stat-value" id="completedTasksCount">0</strong>
+          <!-- Empty State -->
+          <div class="empty-state" id="emptyState">
+            <div class="empty-illustration" aria-hidden="true">
+              <span class="empty-bow">🎀</span>
+              <div class="empty-sparkles">
+                <span>🌸</span>
+                <span>✨</span>
+                <span>♡</span>
+              </div>
             </div>
-
-            <div class="stat-pill total-stat">
-              <span class="stat-icon">🎀</span>
-              <span class="stat-label">Progress:</span>
-              <strong class="stat-value" id="progressPercentage">0%</strong>
-            </div>
+            <h2 class="empty-title">All clear, gorgeous!</h2>
+            <p class="empty-message" id="emptyStateMessage">“No little tasks yet! Time to romanticize your day ♡”</p>
           </div>
-
-          <!-- Cute Progress Bar -->
-          <div class="progress-container" role="progressbar" id="progressBarContainer" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" aria-label="Task completion progress">
-            <div class="progress-bar-fill" id="progressBarFill" style="width: 0%;">
-              <span class="progress-bar-shimmer"></span>
-            </div>
-          </div>
-          <div class="progress-caption" id="progressCaption">Let's blossom today! ✨</div>
-        </div>
-      </section>
-
-      <!-- ================= FILTER CONTROLS ================= -->
-      <div class="controls-bar" id="controlsBar">
-        <div class="filter-tabs" role="tablist" aria-label="Task filters">
-          <button type="button" class="filter-tab active" id="filterAll" role="tab" aria-selected="true" data-filter="all">All ♡</button>
-          <button type="button" class="filter-tab" id="filterActive" role="tab" aria-selected="false" data-filter="active">To Bloom 🌸</button>
-          <button type="button" class="filter-tab" id="filterCompleted" role="tab" aria-selected="false" data-filter="completed">Done 🎀</button>
-        </div>
-
-        <button type="button" class="clear-done-btn" id="clearCompletedBtn" title="Clear all finished tasks">
-          Clear Done 🧹
-        </button>
+        </section>
       </div>
 
-      <!-- ================= TASK LIST ================= -->
-      <section class="task-list-section" aria-label="Tasks List">
-        <ul class="task-list" id="taskList" aria-live="polite">
-          <!-- Dynamically populated tasks will appear here -->
-        </ul>
+      <!-- ================= VIEW 2: FOCUS MODE (POMODORO TIMER) ================= -->
+      <div class="view-panel" id="focusView" style="display: none;">
+        <section class="pomodoro-section" aria-label="Pomodoro Focus Timer">
+          <div class="pomodoro-card">
+            <div class="pomodoro-header">
+              <div class="session-badge" id="pomodoroSessionType">Focus Session 🎀</div>
+              <p class="pomodoro-subtitle">Stay cozy, present &amp; gentle with your flow</p>
+            </div>
 
-        <!-- Cute Empty State -->
-        <div class="empty-state" id="emptyState">
-          <div class="empty-illustration" aria-hidden="true">
-            <span class="empty-bow">🎀</span>
-            <div class="empty-sparkles">
-              <span>🌸</span>
-              <span>✨</span>
-              <span>♡</span>
+            <!-- Mode Selection: 25min Focus vs 5min Break -->
+            <div class="timer-mode-toggles">
+              <button type="button" class="timer-mode-btn active" id="timerModeFocus" data-mode="focus">25m Focus 🌸</button>
+              <button type="button" class="timer-mode-btn" id="timerModeBreak" data-mode="break">5m Break ☕</button>
+            </div>
+
+            <!-- Digital Clock Display -->
+            <div class="timer-clock-display" id="timerDisplay">25:00</div>
+
+            <!-- Task Focus Selection -->
+            <div class="timer-task-select-wrap">
+              <label for="timerTaskSelect" class="timer-task-label">Focusing on:</label>
+              <select id="timerTaskSelect" class="timer-task-select" aria-label="Select task to focus on">
+                <option value="">✨ General Sweet Focus</option>
+              </select>
+            </div>
+
+            <!-- Controls: Start, Pause, Reset -->
+            <div class="timer-controls">
+              <button type="button" class="timer-btn timer-btn-primary" id="timerStartBtn">Start ▶️</button>
+              <button type="button" class="timer-btn timer-btn-secondary" id="timerPauseBtn" disabled>Pause ⏸️</button>
+              <button type="button" class="timer-btn timer-btn-reset" id="timerResetBtn">Reset 🔄</button>
+            </div>
+
+            <p class="timer-tip">♡ A gentle chime will celebrate when your session completes ♡</p>
+          </div>
+        </section>
+      </div>
+
+      <!-- ================= VIEW 3: HABIT GARDEN ================= -->
+      <div class="view-panel" id="gardenView" style="display: none;">
+        <section class="habit-garden-section" aria-label="Virtual Habit Garden">
+
+          <!-- Virtual Blooming Garden Display -->
+          <div class="garden-stage-card">
+            <div class="garden-illustration-wrap" id="gardenIllustration">
+              <!-- Dynamically changes based on today's habit completion -->
+              <div class="garden-stage-art" id="gardenStageArt">🌱</div>
+            </div>
+            <h2 class="garden-stage-title" id="gardenStageTitle">A Little Seedling</h2>
+            <p class="garden-stage-desc" id="gardenStageDesc">Water your habits today to watch your virtual garden blossom! 🌸</p>
+
+            <div class="garden-progress-wrap">
+              <div class="garden-progress-bar">
+                <div class="garden-progress-fill" id="gardenProgressFill" style="width: 0%;"></div>
+              </div>
+              <span class="garden-progress-text" id="gardenProgressText">0 / 0 habits bloomed today</span>
             </div>
           </div>
-          <h2 class="empty-title">All clear, gorgeous!</h2>
-          <p class="empty-message">“No little tasks yet! Time to romanticize your day ♡”</p>
-        </div>
-      </section>
+
+          <!-- Add Habit Form -->
+          <div class="add-habit-card">
+            <h3 class="add-habit-title">Plant a New Daily Habit 🌷</h3>
+            <form id="habitForm" class="habit-form" novalidate>
+              <div class="habit-input-row">
+                <div class="habit-icon-picker">
+                  <select id="habitIconSelect" class="habit-icon-select" aria-label="Choose habit icon">
+                    <option value="💧">💧 Water</option>
+                    <option value="📖">📖 Reading</option>
+                    <option value="🩰">🩰 Stretch</option>
+                    <option value="🫧">🫧 Skincare</option>
+                    <option value="🥗">🥗 Healthy Bite</option>
+                    <option value="☕">☕ Cozy Tea</option>
+                    <option value="📝">📝 Journal</option>
+                    <option value="💤">💤 Sleep</option>
+                    <option value="🌸">🌸 Bloom</option>
+                  </select>
+                </div>
+                <input type="text" id="habitInput" class="habit-text-input" placeholder="e.g. Read 10 cozy pages ♡" maxlength="60" required>
+                <button type="submit" class="add-habit-btn" id="addHabitBtn">Plant 🌱</button>
+              </div>
+            </form>
+          </div>
+
+          <!-- Habits List -->
+          <div class="habits-list-wrap">
+            <h3 class="habits-list-title">Today's Habits:</h3>
+            <ul class="habits-list" id="habitsList">
+              <!-- Habit items populated dynamically -->
+            </ul>
+          </div>
+        </section>
+      </div>
 
       <!-- ================= FOOTER ================= -->
       <footer class="app-footer">
@@ -188,12 +421,96 @@
     </main>
   </div>
 
-  <!-- Toast Notifications for Cute Feedback -->
+  <!-- ================= EDIT TASK MODAL ================= -->
+  <div class="modal-backdrop" id="editTaskModal" role="dialog" aria-modal="true" aria-labelledby="editModalTitle" style="display: none;">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h2 class="modal-title" id="editModalTitle">Edit Task 🎀</h2>
+        <button type="button" class="modal-close-btn" id="closeEditModalBtn" aria-label="Close edit modal">×</button>
+      </div>
+      <form id="editTaskForm" class="edit-task-form">
+        <input type="hidden" id="editTaskId">
+
+        <div class="modal-field">
+          <label for="editTaskText" class="modal-label">Task Description:</label>
+          <input type="text" id="editTaskText" class="modal-input" required maxlength="200">
+        </div>
+
+        <div class="modal-grid-2">
+          <div class="modal-field">
+            <label for="editTaskCategory" class="modal-label">Category:</label>
+            <select id="editTaskCategory" class="modal-select">
+              <option value="Personal">🌷 Personal</option>
+              <option value="College">🎓 College</option>
+              <option value="Coding">💻 Coding</option>
+              <option value="Self-care">💗 Self-care</option>
+            </select>
+          </div>
+
+          <div class="modal-field">
+            <label for="editTaskPriority" class="modal-label">Priority:</label>
+            <select id="editTaskPriority" class="modal-select">
+              <option value="Low">🌸 Low</option>
+              <option value="Medium">🎀 Medium</option>
+              <option value="High">✨ High</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="modal-field">
+          <label for="editTaskDueDate" class="modal-label">Due Date:</label>
+          <input type="date" id="editTaskDueDate" class="modal-input">
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" class="modal-btn modal-btn-secondary" id="cancelEditBtn">Cancel</button>
+          <button type="submit" class="modal-btn modal-btn-primary">Save Changes ♡</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ================= FAVORITES QUOTES MODAL ================= -->
+  <div class="modal-backdrop" id="favoritesModal" role="dialog" aria-modal="true" aria-labelledby="favModalTitle" style="display: none;">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h2 class="modal-title" id="favModalTitle">Saved Reminders &amp; Love Notes 💌</h2>
+        <button type="button" class="modal-close-btn" id="closeFavModalBtn" aria-label="Close favorites modal">×</button>
+      </div>
+      <div class="favorites-list-container" id="favoritesListContainer">
+        <!-- Favorites rendered dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= EDIT NAME MODAL ================= -->
+  <div class="modal-backdrop" id="editNameModal" role="dialog" aria-modal="true" aria-labelledby="nameModalTitle" style="display: none;">
+    <div class="modal-card modal-card-sm">
+      <div class="modal-header">
+        <h2 class="modal-title" id="nameModalTitle">What should we call you? 🌸</h2>
+        <button type="button" class="modal-close-btn" id="closeNameModalBtn" aria-label="Close name modal">×</button>
+      </div>
+      <form id="editNameForm">
+        <div class="modal-field">
+          <input type="text" id="nameInput" class="modal-input" placeholder="Your pretty name..." maxlength="30" required>
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="modal-btn modal-btn-secondary" id="cancelNameBtn">Cancel</button>
+          <button type="submit" class="modal-btn modal-btn-primary">Save Name ♡</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Celebration Confetti Sparkle Container -->
+  <div class="celebration-container" id="celebrationContainer" aria-hidden="true"></div>
+
+  <!-- Toast Notifications Container -->
   <div class="toast-container" id="toastContainer" aria-live="polite" aria-atomic="true"></div>
 
-  <!-- Load Quotes Collection First -->
+  <!-- Scripts -->
   <script src="quotes.js"></script>
-  <!-- Load Main Application Logic -->
+  <script src="task-utils.js"></script>
   <script src="script.js"></script>
 </body>
 </html>

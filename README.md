@@ -1,193 +1,84 @@
-# PetalList 🎀
+# PetalList
 
-> *“A little list for a lovely day ♡”*
+PetalList is a single-user productivity app built with Node.js, Express, and vanilla HTML, CSS, and JavaScript. It combines task management, a habit garden, a Pomodoro-style focus timer, and locally saved personalization with a pastel journal-inspired interface.
 
-**PetalList** is a lightweight, beginner-friendly to-do list web application designed with a soft, girly **coquette aesthetic** inspired by digital pastel journals, delicate bows, and cozy study days.
+## Features
 
-Built with **Node.js**, **Express.js**, and vanilla frontend web standards (**HTML5**, **CSS3**, **JavaScript**), PetalList keeps your daily goals organized while sprinkling in a daily dose of humor, student motivation, and sweet reminders.
+- Create, edit, complete, and delete tasks.
+- Give each task a category (`College`, `Coding`, `Personal`, or `Self-care`), priority (`Low`, `Medium`, or `High`), and optional due date.
+- Search task text; sort by due date, priority, creation time, or name; filter by all, today, upcoming, overdue, or completed tasks.
+- View task counts, completion percentage, and progress.
+- Create habits, mark or unmark them for today, remove them, and view current streaks and daily garden progress.
+- Run 25-minute focus and 5-minute break timer sessions, pause and reset the timer, and associate a session with an active task.
+- Choose a color theme, toggle dark mode, and save a display name.
+- Shuffle through the bundled quote collection and save or remove favorite quotes.
+- Use the responsive interface on desktop and mobile.
 
----
+## Run locally
 
-## 🎀 Aesthetic & Design
+Requirements: Node.js 16 or later and npm.
 
-- **Color Palette:**
-  - Blush pink: `#F8C8DC`
-  - Baby pink: `#FADADD`
-  - Cream: `#FFF9F5`
-  - Rose pink: `#E98BAA`
-  - Dark cocoa: `#5C4148`
-  - White: `#FFFFFF`
-- **Typography:** *Playfair Display* for romantic, elegant serif headings and *Poppins* for clean, modern, readable body text.
-- **Accents:** Delicate bows (`୨ৎ`, `🎀`), sparkles (`✨`), hearts (`♡`, `💗`), and tiny flowers (`🌸`).
-- **Feel:** Smooth transitions, soft shadows, rounded corners, responsive layout on desktop and mobile.
+```sh
+npm install
+npm start
+```
 
----
+Open <http://localhost:3000>. For development with automatic restarts:
 
-## ✨ Features
+```sh
+npm run dev
+```
 
-1. **Header & Aesthetics:**
-   - Playful app title with floating ribbon elements and soft pastel backdrop.
-2. **Add Tasks:**
-   - Input field with cute placeholder: *“What’s on your mind, pretty? ♡”*
-   - Cute pink `Add Task +` button or press <kbd>Enter</kbd>.
-   - Built-in validation rejects empty or whitespace-only submissions with a gentle shake.
-3. **Interactive Task List:**
-   - Custom rounded check buttons: check off items to strike through text and soften cards.
-   - Click again to mark active whenever needed.
-   - Delete button with a gentle hover spin to sweep tasks away.
-4. **Real-time Statistics & Progress Bar:**
-   - Tracks **Active** tasks, **Completed** tasks, and **Percentage**.
-   - Dynamic progress bar with a soft pink shimmer and encouraging captions that evolve as you finish tasks.
-5. **Filter Tabs:**
-   - Easily switch between **All ♡**, **To Bloom 🌸** (active), and **Done 🎀** (completed).
-   - "Clear Done 🧹" button to quickly clean up completed tasks.
-6. **Cute Empty State:**
-   - Displays *“No little tasks yet! Time to romanticize your day ♡”* when no tasks exist.
-7. **Daily Surprise — Quotes, Jokes & Girly Motivation 💌:**
-   - Randomly displays one of **68+** curated, witty, and heartwarming messages on page load.
-   - Mix of relatable college humor, coding jokes, gentle self-care, coquette wisdom, and sassy motivation.
-   - Uses `sessionStorage` to avoid repeating the exact same message on consecutive reloads.
-   - **“Another one, please! 🎲”** button shuffles in a new quote instantly without page reload.
-8. **Dual Persistence (Backend API + Browser localStorage):**
-   - Saves tasks to the Express in-memory array via REST API.
-   - Automatically synchronizes with browser `localStorage`, ensuring tasks remain safely saved across page refreshes even if the Node server restarts.
+## Project structure
 
----
+```text
+ToDoApp/
+├── data/
+│   └── store.json       # Persistent server-side task and habit data
+├── public/
+│   ├── index.html       # App structure and controls
+│   ├── style.css        # Themes, layout, animations, and responsive rules
+│   ├── script.js        # Browser interactions and API client
+│   ├── task-utils.js    # Shared task filtering, sorting, and date validation
+│   └── quotes.js        # Bundled quote collection
+├── test/
+│   └── api.test.js      # API and task utility tests
+├── server.js            # Express static server, REST API, and JSON persistence
+├── package.json
+└── README.md
+```
 
-## 🚀 Getting Started
+## How the frontend and backend work together
 
-### Prerequisites
+Express serves the files in `public/` and exposes JSON endpoints under `/api`. The browser fetches tasks and habits from the server, sends changes to the API, and updates the displayed state only after the server confirms the change. Failed requests are shown to the user and do not create an unsaved browser-only task or habit.
 
-- [Node.js](https://nodejs.org/) (v16.0.0 or later recommended)
-- `npm` (bundled with Node.js)
+The server-side JSON file is the source of truth for tasks and habits. By default, it is `data/store.json`; `PETALLIST_STORE_FILE` can point the server to a different JSON file when a separate data store is needed. Writes use a temporary file and replace the store after the write succeeds. This JSON-backed setup is intended for local, single-user use; it does not provide accounts, access control, or multi-user data isolation.
 
-### Installation
+Theme, dark-mode, display-name, and favorite-quote preferences are stored in the browser's `localStorage`. The most recently shown quote ID is stored in `sessionStorage` to avoid an immediate repeat. Task and habit state is not restored from browser storage.
 
-1. Clone or navigate to the repository directory:
-   ```bash
-   cd ToDoApp
-   ```
+## REST API
 
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
+Task records have an `id`, `text`, `completed`, `category`, `priority`, `dueDate`, `createdAt`, and `updatedAt`. Existing records without optional metadata continue to display with sensible defaults.
 
-3. Start the application:
-   ```bash
-   npm start
-   ```
-   *Or for development with automatic restarts on changes:*
-   ```bash
-   npm run dev
-   ```
+| Method | Endpoint | Description |
+| --- | --- | --- |
+| `GET` | `/api/tasks` | Return all tasks. |
+| `POST` | `/api/tasks` | Create a task. Body: `{"text":"Study","category":"College","priority":"High","dueDate":"2026-10-20"}`. Category, priority, and due date are optional. |
+| `PATCH` | `/api/tasks/:id` | Update task fields. Send `{"completed":true}`, or edit with `text`, `category`, `priority`, and/or `dueDate`. An empty JSON object toggles completion for compatibility. Use `null` or an empty string to clear the due date. |
+| `DELETE` | `/api/tasks/:id` | Delete a task. |
+| `POST` | `/api/tasks/sync` | Legacy bulk import. A non-empty `clientTasks` array replaces the task list; it is not used by the frontend. |
+| `GET` | `/api/habits` | Return all habits and completion dates. |
+| `POST` | `/api/habits` | Create a habit. Body: `{"name":"Read 10 pages","icon":"📖"}`. |
+| `PATCH` | `/api/habits/:id/toggle` | Toggle completion for a date. Body may include `{"date":"2026-10-14"}`; omitted date means today. |
+| `DELETE` | `/api/habits/:id` | Delete a habit. |
+| `POST` | `/api/habits/sync` | Legacy bulk import for habits. A non-empty `clientHabits` array replaces the habit list. |
 
-4. Open your browser and visit:
-   ```
-   http://localhost:3000
-   ```
+Invalid task descriptions, categories, priorities, calendar dates, and IDs return a JSON error response. Task descriptions are limited to 200 characters; habit names are limited to 60 characters.
 
----
+## Tests
 
-## 🛠️ REST API Reference
-
-The backend exposes a clean and beginner-friendly JSON REST API:
-
-| Method | Endpoint | Description | Request Body | Status Codes |
-| :--- | :--- | :--- | :--- | :--- |
-| `GET` | `/api/tasks` | Returns all to-do tasks | *None* | `200 OK` |
-| `POST` | `/api/tasks` | Creates a new task | `{ "text": "Task description" }` | `201 Created`, `400 Bad Request` |
-| `PATCH` | `/api/tasks/:id` | Toggles or updates task completion status | `{ "completed": true }` *(optional)* | `200 OK`, `400 Bad Request`, `404 Not Found` |
-| `DELETE` | `/api/tasks/:id` | Deletes a task by ID | *None* | `200 OK`, `400 Bad Request`, `404 Not Found` |
-| `POST` | `/api/tasks/sync` | Restores client tasks to server after restart | `{ "clientTasks": [...] }` | `200 OK` |
-
-### Testing the API
-
-Run the automated test suite:
-```bash
+```sh
 npm test
 ```
 
-You can also test the endpoints using `curl` or PowerShell:
-```bash
-# 1. Fetch all tasks
-curl http://localhost:3000/api/tasks
-
-# 2. Add a new task
-curl -X POST http://localhost:3000/api/tasks \
-  -H "Content-Type: application/json" \
-  -d '{"text": "Study at the cute cafe ♡"}'
-
-# 3. Toggle task completion (ID 1)
-curl -X PATCH http://localhost:3000/api/tasks/1
-
-# 4. Delete a task (ID 1)
-curl -X DELETE http://localhost:3000/api/tasks/1
-```
-
----
-
-## 📁 Project Structure
-
-```
-ToDoApp/
-├── public/
-│   ├── index.html       # Semantic HTML5 structure with coquette cards
-│   ├── style.css        # Girly pastel-pink styling & micro-animations
-│   ├── script.js        # Client-side reactivity, API calls & localStorage sync
-│   └── quotes.js        # 68+ quotes, student jokes & motivation collection
-├── test/
-│   └── api.test.js      # Automated test suite for endpoints & quote quality
-├── server.js            # Express.js backend server with REST API
-├── package.json         # Project metadata and dependencies
-├── .gitignore           # Ignores node_modules, logs, and OS files
-└── README.md            # Project documentation and guide
-```
-
----
-
-## 🎀 How the Backend and Frontend Work Together
-
-1. **Express Server (`server.js`):**
-   - Serves the frontend assets statically from the `public/` directory.
-   - Manages an in-memory array of task objects (`[{ id, text, completed, createdAt }]`).
-   - Validates incoming data and returns standardized HTTP status codes and JSON.
-2. **Frontend Client (`public/script.js`):**
-   - Fetches tasks from `/api/tasks` on page load.
-   - Maintains an in-browser backup in `localStorage` under `petallist_tasks_cache`.
-   - Sends REST API requests (`POST`, `PATCH`, `DELETE`) on user actions and immediately updates the UI for zero perceived latency.
-   - If the server restarts, the frontend uses `/api/tasks/sync` to restore cached tasks so your list stays intact!
-3. **Daily Surprise (`public/quotes.js`):**
-   - Operates completely client-side without external API keys or rate limits.
-   - Keeps track of the last viewed quote in `sessionStorage` so refreshing gives you a fresh smile every time.
-
----
-
-## 🌸 Git & GitHub Guide
-
-To stage, commit, and push your work to GitHub:
-
-```bash
-# 1. Initialize git (if not already initialized)
-git init
-
-# 2. Stage all project files (.gitignore ensures node_modules is excluded)
-git add .
-
-# 3. Commit with the required message
-git commit -m "feat: build PetalList girly todo app"
-
-# 4. Link your GitHub repository (replace with your repo URL)
-# If you haven't added a remote yet:
-git remote add origin https://github.com/<YOUR_USERNAME>/<YOUR_REPO_NAME>.git
-
-# 5. Rename branch to main (standard)
-git branch -M main
-
-# 6. Push to GitHub
-git push -u origin main
-```
-
----
-
-*Made with love, pink dreams & a little productivity ♡*
+The test suite exercises task filtering and sorting, task CRUD and validation, habit API behavior, quote data, and JSON persistence. It sets `PETALLIST_STORE_FILE` to a temporary test file and removes that file afterward, leaving `data/store.json` unchanged.
